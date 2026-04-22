@@ -1,4 +1,3 @@
-import sys
 print("Welcome To ATM System")
 usernames = ["ahmed"]
 passwords = {"ahmed" : "test"}
@@ -7,7 +6,7 @@ balances = {"ahmed" : 500}
 def accounts() :
     ac = input("Enter the number of your choice : 1.Login 2.Signup 3.Exit ::: ")
     if ac == "3" :
-        sys.exit()
+        print("fuck you")
     elif ac == "1" :
         username1 = input("Enter your Username : ")
         if username1 in usernames :
@@ -41,15 +40,15 @@ def main(username11) :
             print("please write a valid Number to deposit")
     elif choice == "1" :
         withdraw = input("Please Enter the amount of money You want to Withdraw : ")
-        if withdraw != int :
-            print("please Enter a Valid Value")
-        else :
+        try :
+            withdraw = int(withdraw)
             if withdraw <= balances[username11] :
                 balances[username11] = balances[username11] - withdraw
                 print("You Withdrew",withdraw,"USD from your balance.")
-            else :
-                print("please Enter a Valid amount")
-
+            else : 
+                print("Enter a Valid amount to withdraw")
+        except :
+            print("please Enter a Valid Vlaue")
 
 while True :
     accc = accounts()
