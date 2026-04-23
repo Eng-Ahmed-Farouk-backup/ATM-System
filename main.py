@@ -1,8 +1,10 @@
+import sys
 
 print("Welcome To Bank System\n")
 usernames = ["ahmed"]
 passwords = {"ahmed" : "test"}
 balances = {"ahmed" : 500}
+history = {"ahmed" : []}
 
 def q () :
     ac = input("Enter the number of your choice : 1.Login 2.Signup 3.Exit ::: ")
@@ -36,11 +38,12 @@ def accounts() :
         passwo = input("Please Enter a Password :::::  ")
         passwords[username1] = passwo
         balances[username1] = 0
+        history[username1] = []
         print("account Created!")
         return username1
 
 def main(username11) :
-    choice = input("Please enter the Number of your Choice :\n 1.Withdraw \n 2.Deposit \n 3.Check balance \n 4.Transfer to other Bank Account \n ::::  ")
+    choice = input("Please enter the Number of your Choice :\n 1.Withdraw \n 2.Deposit \n 3.Check balance \n 4.Transfer to other Bank Account \n 5.Show History \n ::::  ")
     
     if choice == "3" : 
         print("Hey",username11,"your balance is :::: ",balances[username11],"USD")
@@ -50,6 +53,7 @@ def main(username11) :
         try :
             deposit = int(deposit)
             balances[username11] = deposit + balances[username11]
+            history[username11].append("Deposited " + str(deposit) + " USD")
             print("You Deposited",deposit,"USD into your balance.")
         except :
             print("please write a valid Number to deposit")
@@ -61,6 +65,7 @@ def main(username11) :
             withdraw = int(withdraw)
             if withdraw <= balances[username11] :
                 balances[username11] = balances[username11] - withdraw
+                history[username11].append("Withdrew " + str(withdraw) + " USD")
                 print("You Withdrew",withdraw,"USD from your balance.")
             else : 
                 print("Enter a Valid amount to withdraw")
@@ -69,6 +74,13 @@ def main(username11) :
 
     elif choice == "4" :
         account_transfer(username11)
+
+    elif choice == "5" :
+        print("Your History")
+        for x in history[username11] :
+            print(x)
+        if history[username11] == [] :
+            print("No History")
 
 def account_transfer(giver) :
     taker = input("Please Enter the Reciever Bank Username : ")
@@ -81,6 +93,8 @@ def account_transfer(giver) :
             if am <= balances[giver] :
                 balances[giver] = balances[giver] - am
                 balances[taker] = am + balances[taker]
+                history[giver].append("Sent " + str(am) + " USD to " + taker)
+                history[taker].append("Received " + str(am) + " USD from " + giver)
             else :
                 print("Please Enter a Valid Amount")
         except :
