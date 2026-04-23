@@ -54,7 +54,7 @@ def accounts() :
 
 def main(username11) :
     while True :
-        choice = input("Please enter the Number of your Choice :\n 1.Withdraw \n 2.Deposit \n 3.Check balance \n 4.Transfer \n 5.Show History \n 6.Logout \n ::::  ")
+        choice = input("Please enter the Number of your Choice :\n 1.Withdraw \n 2.Deposit \n 3.Check balance \n 4.Transfer \n 5.Show History \n 6.Logout \n 7.Change Password \n 8.Delete Account \n ::::  ")
         
         if choice == "3" : 
             print("Hey",username11,"your balance is :::: ",balances[username11],"USD")
@@ -89,12 +89,33 @@ def main(username11) :
             print("Your History")
             for x in history[username11] :
                 print(x)
-            if history[username11] == [] :
-                print("No History")
 
         elif choice == "6" :
             print("Logged out")
             return
+
+        elif choice == "7" :
+            old = input("Enter old password : ")
+            if old == passwords[username11] :
+                newp = input("Enter new password : ")
+                passwords[username11] = newp
+                history[username11].append("Changed Password")
+                print("Done")
+            else :
+                print("Wrong")
+
+        elif choice == "8" :
+            conf = input("Enter YES: ")
+            if conf == "YES" :
+                usernames.remove(username11)
+                del passwords[username11]
+                del balances[username11]
+                del history[username11]
+                del pins[username11]
+                print("Deleted")
+                return
+            else :
+                print("Cancelled")
 
 def account_transfer(giver) :
     taker = input("Please Enter the Reciever Bank Username : ")
