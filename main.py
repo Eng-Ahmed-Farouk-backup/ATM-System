@@ -5,6 +5,7 @@ usernames = ["ahmed"]
 passwords = {"ahmed" : "test"}
 balances = {"ahmed" : 500}
 history = {"ahmed" : []}
+pins = {"ahmed" : "1234"}
 
 def q () :
     ac = input("Enter the number of your choice : 1.Login 2.Signup 3.Exit ::: ")
@@ -23,8 +24,13 @@ def accounts() :
         if username1 in usernames :
             passw = input("Enter your Password : ")
             if passw == passwords[username1] :
-                print("you Logged in !")
-                return username1
+                pin1 = input("Enter your PIN : ")
+                if pin1 == pins[username1] :
+                    print("you Logged in !")
+                    return username1
+                else :
+                    print("Wrong PIN")
+                    return accounts()
             else :
                 print("Wrong Password Please Try again")
                 return accounts()
@@ -36,63 +42,69 @@ def accounts() :
         username1 = input("Please Enter a Username : ")
         usernames.append(username1)
         passwo = input("Please Enter a Password :::::  ")
+        pin2 = input("Please Enter a PIN :::::  ")
+
         passwords[username1] = passwo
         balances[username1] = 0
         history[username1] = []
+        pins[username1] = pin2
+
         print("account Created!")
         return username1
 
 def main(username11) :
-    choice = input("Please enter the Number of your Choice :\n 1.Withdraw \n 2.Deposit \n 3.Check balance \n 4.Transfer to other Bank Account \n 5.Show History \n ::::  ")
-    
-    if choice == "3" : 
-        print("Hey",username11,"your balance is :::: ",balances[username11],"USD")
+    while True :
+        choice = input("Please enter the Number of your Choice :\n 1.Withdraw \n 2.Deposit \n 3.Check balance \n 4.Transfer \n 5.Show History \n 6.Logout \n ::::  ")
+        
+        if choice == "3" : 
+            print("Hey",username11,"your balance is :::: ",balances[username11],"USD")
 
-    elif choice == "2" :
-        deposit = input("Please Enter the amount of money You want to Deposit : ")
-        try :
-            deposit = int(deposit)
-            balances[username11] = deposit + balances[username11]
-            history[username11].append("Deposited " + str(deposit) + " USD")
-            print("You Deposited",deposit,"USD into your balance.")
-        except :
-            print("please write a valid Number to deposit")
+        elif choice == "2" :
+            deposit = input("Please Enter the amount of money You want to Deposit : ")
+            try :
+                deposit = int(deposit)
+                balances[username11] += deposit
+                history[username11].append("Deposited " + str(deposit))
+                print("Done")
+            except :
+                print("Error")
+
+        elif choice == "1" :
+            withdraw = input("Please Enter the amount of money You want to Withdraw : ")
+            try :
+                withdraw = int(withdraw)
+                if withdraw <= balances[username11] :
+                    balances[username11] -= withdraw
+                    history[username11].append("Withdrew " + str(withdraw))
+                    print("Done")
+                else :
+                    print("Invalid")
+            except :
+                print("Error")
+
+        elif choice == "4" :
+            account_transfer(username11)
+
+        elif choice == "5" :
+            print("Your History")
+            for x in history[username11] :
+                print(x)
+            if history[username11] == [] :
+                print("No History")
+
+        elif choice == "6" :
+            print("Logged out")
             return
-
-    elif choice == "1" :
-        withdraw = input("Please Enter the amount of money You want to Withdraw : ")
-        try :
-            withdraw = int(withdraw)
-            if withdraw <= balances[username11] :
-                balances[username11] = balances[username11] - withdraw
-                history[username11].append("Withdrew " + str(withdraw) + " USD")
-                print("You Withdrew",withdraw,"USD from your balance.")
-            else : 
-                print("Enter a Valid amount to withdraw")
-        except :
-            print("please Enter a Valid Vlaue")
-
-    elif choice == "4" :
-        account_transfer(username11)
-
-    elif choice == "5" :
-        print("Your History")
-        for x in history[username11] :
-            print(x)
-        if history[username11] == [] :
-            print("No History")
 
 def account_transfer(giver) :
     taker = input("Please Enter the Reciever Bank Username : ")
-    
     if taker in usernames and taker != giver :
-        
         am = input("Please Enter the Amount you want to Transfer : ")
         try :
             am = int(am)
             if am <= balances[giver] :
-                balances[giver] = balances[giver] - am
-                balances[taker] = am + balances[taker]
+                balances[giver] -= am
+                balances[taker] += am
                 history[giver].append("Sent " + str(am) + " USD to " + taker)
                 history[taker].append("Received " + str(am) + " USD from " + giver)
             else :
@@ -101,7 +113,6 @@ def account_transfer(giver) :
             print("please Enter a Valid Value")
     else :
         print("Please Enter a Valid Username")
-
 
 while True :
     accc = accounts()
