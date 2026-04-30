@@ -25,7 +25,7 @@ then just Try the system
 - Test PIN : 1234
 
 # Author
-this is Visual Novel Made By Ahmed Farouk
+this is Bank System Made By Ahmed Farouk
 Passionate about STEAM, Entrepreneurship 
 
 - Leader of Innovations Hack Club
